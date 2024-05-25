@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
   "name": "dk-sort",
-  "version": "0.2",
+  "version": "0.3",
 
-  "description": "Make entries in dailykos.com live update articles sortable.",
+  "description": "Add sort toolbar to in dailykos.com live update articles.",
   "author": "Paul Duncan",
   "homepage_url": "https://github.com/pablotron/dk-sort",
 
