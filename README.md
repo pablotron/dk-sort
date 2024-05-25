@@ -7,10 +7,15 @@ live update articles:
 2. Add a toolbar which allows you to edit the entry sort order and also
    download the entries as a [CSV][] file.
 
+## Screenshot
+
+![toolbar screenshot](./shots/toolbar.png)
+
 ## Notes
 
-* Icon borrowed from [Bootstrap Icons][]
-* This extension was originally a [bookmarklet][]; the original source is
+- Currently only tested in [Firefox][], but should work in Chrome too.
+- Icon borrowed from [Bootstrap Icons][]
+- This extension was originally a [bookmarklet][]; the original source is
   available here: <https://pmdn.org/dk-sort.txt>.
 
 [browser extension]: https://en.wikipedia.org/wiki/Browser_extension
@@ -23,3 +28,5 @@ live update articles:
   "Bootstrap Icons"
 [bookmarklet]: https://en.wikipedia.org/wiki/Bookmarklet
   "Bookmark that contains JavaScript which adds new browser features."
+[firefox]: https://mozilla.org/firefox/
+  "Firefox web browser"
