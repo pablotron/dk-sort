@@ -4,6 +4,7 @@
   "version": "0.2",
 
   "description": "Make entries in dailykos.com live update articles sortable.",
+  "author": "Paul Duncan",
   "homepage_url": "https://github.com/pablotron/dk-sort",
 
   "browser_specific_settings": {
@@ -14,7 +15,8 @@
   },
 
   "icons": {
-    "48": "icons/sort-numeric-down-48.png"
+    "48": "icons/sort-numeric-down-48.png",
+    "128": "icons/sort-numeric-down-128.png"
   },
 
   "content_scripts": [
