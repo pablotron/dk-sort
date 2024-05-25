@@ -1,3 +1,19 @@
+/**
+ * dk-sort.js: script which makes the following changes to live update
+ * articles on dailykos.com:
+ *
+ * 1. adds a toolbar below the story image which allows you to sort live
+ *    update entries or download them as a CSV file.
+ * 2. installs a timer which periodically re-sorts live update entries
+ *    according to the settings in the toolbar.
+ *
+ * this extension is based on a bookmarklet which i originally wrote to
+ * sort live update entries in chronological (that is, readable) order
+ * rather than reverse chronological order.
+ *
+ * the original bookmarklet is included in the browser extension and git
+ * repo as `dk-sort.txt`, and also here: <https://pmdn.org/dk-sort.txt>.
+ */
 (() => {
   'use strict';
 
