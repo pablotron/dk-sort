@@ -318,49 +318,48 @@
     }),
   };
 
-  // initialize UI panel
-  //
-  // this functions in an odd way; the live update pages use react and
-  // don't immediately render the content on page load, we poll at 500ms
-  // intervals until the story image has been rendered, then render and
-  // attach the ui panel below that.
-  const ui_init = () => {
-    // render ui to body of given element, set
-    // padding and border of element, then return element
-    const draw = (e) => {
-      // render panel body
-      e.innerHTML = UI.templates.panel();
+  // render ui panel to body of given element, set
+  // padding and border of element, then return element
+  const ui_draw = (e) => {
+    // render panel body
+    e.innerHTML = UI.templates.panel();
 
-      // apply styles
-      for (let [key, val] of Object.entries(UI.styles)) {
-        e.style[key] = val;
-      }
+    // apply styles
+    for (let [key, val] of Object.entries(UI.styles)) {
+      e.style[key] = val;
+    }
 
-      // return element
-      return e;
-    };
-
-    // wait until story image is rendered, then add ui panel
-    let timer = setInterval(() => {
-      // get story image, return if undefined
-      const im = document.querySelector(S.story_image);
-      if (!im) {
-        return;
-      }
-
-      // remove polling timer
-      clearInterval(timer);
-
-      // render ui, append after story image
-      im.append(draw(document.createElement('div')));
-
-      // add click handlers
-      qsa(S.modes).forEach((e) => e.addEventListener('click', handlers.mode));
-      UI.buttons.forEach(({id}) => document.querySelector(`#dk-sort-${id}`).addEventListener('click', handlers[id]));
-    }, 500);
+    // return element
+    return e;
   };
 
-  ui_init(); // init ui
-  setInterval(refresh, DELAY); // start refresh timer
-  refresh(); // sort entries initially
+  // init UI panel
+  //
+  // this functions in an odd way; the live update pages use react and
+  // don't immediately render the content on page load, we wait until
+  // the story image and at least one live update entry are present,
+  // then render and attach the ui panel below the story image.
+  wait(ui_is_ready).then(() => {
+    // get story image, render ui, append ui after story image
+    const im = document.querySelector(S.story_image);
+    im.append(ui_draw(document.createElement('div')));
+
+    // update counter
+    document.querySelector(S.count).textContent = qsa(S.entries).length;
+
+    // add click handlers
+    qsa(S.modes).forEach((e) => e.addEventListener('click', handlers.mode));
+    UI.buttons.forEach(({id}) => document.querySelector(`#dk-sort-${id}`).addEventListener('click', handlers[id]));
+  });
+
+  // init periodic timer
+  //
+  // same note as above; the live update pages use react and don't
+  // immediately render their content on page load, so wait until at
+  // least one live update entry is present, then install the periodic
+  // sort timer.
+  wait(timer_is_ready).then(() => {
+    setInterval(refresh, DELAY); // start refresh timer
+    refresh(); // sort entries initially
+  });
 })();
