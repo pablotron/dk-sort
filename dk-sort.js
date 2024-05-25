@@ -12,6 +12,9 @@
     // live update entries
     entries: '.live-update-wrapper',
 
+    // entry counter
+    count: '#dk-sort-count',
+
     // all sort mode radio buttons
     modes: 'input.dk-sort-mode[type="radio"]',
 
@@ -92,7 +95,23 @@
       `,
 
       panel: () => `
-        <b>Sort Entries:</b> ${UI.modes.map(UI.templates.mode).join('')}
+        <span style='background: #eee; padding-left: 15px; padding-right: 10px'>
+          <span
+            id='dk-sort-count'
+            style='font-weight: normal; text-align: right'
+            title='Total number of live update entries.'
+            aria-label='Total number of live update entries.'
+          >?</span>
+        </span>
+
+        <span
+          style='margin-left: 10px'
+          title='Sort modes.'
+          aria-label='Sort modes.'
+        >
+          <b>Sort Entries:</b> ${UI.modes.map(UI.templates.mode).join('')}
+        </span>
+
         <span style='position: absolute; right: 0; margin-right: 10px'>
           ${UI.buttons.map(UI.templates.button).join(' ')}
         </span>
@@ -193,6 +212,9 @@
       h: e.innerHTML,
       t: et(e),
     })), get_mode());
+
+    // update counter
+    document.querySelector(S.count).textContent = E.length;
 
     // refresh elements (update body and epochtime of elements inline)
     qsa(S.entries).forEach((e, i) => {
