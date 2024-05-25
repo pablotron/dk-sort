@@ -4,6 +4,23 @@
   // refresh interval, in milliseconds
   const DELAY = 3000; // 3s
 
+  // until() polling interval, in milliseconds
+  //
+  // a lower value is more cpu intensive, but means the ui panel will
+  // appear sooner once the live update entries are rendered
+  //
+  // a higher value is less cpu intensive, but means there will be a
+  // longer delay between when the live update entry are rendered and
+  // the ui panel is visibile.
+  //
+  // 500ms seems like a good balance
+  const UNTIL_POLL_INTERVAL = 500; // 500ms
+
+  // until() polling timeout, in milliseconds
+  //
+  // once this duration is exceeded, until() will stop polling.
+  const UNTIL_POLL_TIMEOUT = 120000; // 2m
+
   // css selectors
   const S = {
     // story image (ui panel rendered below this)
@@ -222,6 +239,42 @@
       e.dataset.epochTime = E[i].t;
     });
   };
+
+  // predicate function which returns `true` if there are live update
+  // entries, and `false` otherwise.  used to defer timer initialization
+  // until there are live update entries.
+  const timer_is_ready = () => qsa(S.entries).length > 0;
+
+  // predicate function returns `true` if both of the following
+  // conditions are true, and `false` otherwise:
+  //
+  // 1. the story image exists.
+  // 2. there is at least one visible live update entry.
+  //
+  // used to defer ui panel initialization until there is something to
+  // fiddle with, and to prevent showing the ui panel on non-live update
+  // pages.
+  const ui_is_ready = () => !!document.querySelector(S.story_image) && timer_is_ready();
+
+  // poll periodically until result of predicate function is `true`,
+  // then execute `action`.  uses the `UNTIL_POLL_*` constants defined
+  // in the header.
+  const until = (pred) => new Promise((resolve, reject) => {
+    const t0 = Date.now(); // get start time
+
+    // add polling timer
+    const timer = setInterval(() => {
+      if (pred()) {
+        // predicate succeeded, remove timer and resolve promise
+        clearInterval(timer); // remove timer
+        resolve(); // resolve promise
+      } else if (Date.now() - t0 > UNTIL_POLL_TIMEOUT) {
+        // timeout exceeded, remove timer and reject promise
+        clearInterval(timer); // remove timer
+        reject(); // reject promise
+      }
+    }, UNTIL_POLL_INTERVAL);
+  });
 
   // event handlers
   const handlers = {
