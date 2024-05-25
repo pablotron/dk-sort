@@ -23,7 +23,7 @@
   const UI = {
     // about dialog blurb
     about: `
-      Sort and download entries on a Daily Kos live update page.
+      Sort and download entries on a Daily Kos live update pages.
     `.replace(/^\s*|\s*$/g, ''),
 
     // sort mode radio buttons
