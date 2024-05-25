@@ -20,7 +20,7 @@
   // refresh interval, in milliseconds
   const DELAY = 3000; // 3s
 
-  // until() polling interval, in milliseconds
+  // wait() polling interval, in milliseconds
   //
   // a lower value is more cpu intensive, but means the ui panel will
   // appear sooner once the live update entries are rendered
@@ -30,12 +30,12 @@
   // the ui panel is visibile.
   //
   // 500ms seems like a good balance
-  const UNTIL_POLL_INTERVAL = 500; // 500ms
+  const WAIT_POLL_INTERVAL = 500; // 500ms
 
-  // until() polling timeout, in milliseconds
+  // wait() polling timeout, in milliseconds
   //
-  // once this duration is exceeded, until() will stop polling.
-  const UNTIL_POLL_TIMEOUT = 120000; // 2m
+  // once this duration is exceeded, wait() will stop polling.
+  const WAIT_POLL_TIMEOUT = 120000; // 2m
 
   // css selectors
   const S = {
@@ -272,10 +272,16 @@
   // pages.
   const ui_is_ready = () => !!document.querySelector(S.story_image) && timer_is_ready();
 
-  // poll periodically until result of predicate function is `true`,
-  // then execute `action`.  uses the `UNTIL_POLL_*` constants defined
-  // in the header.
-  const until = (pred) => new Promise((resolve, reject) => {
+  // returns a promise which behaves as follows:
+  //
+  // 1. poll until result of predicate function is `true`, then resolve
+  //    returned promise.
+  // 2. if poll timeout is reached and predicate still has not
+  //    succeeded, then reject returned promise.
+  //
+  // polling interval and timeout are specified in the `WAIT_POLL_*`
+  // constants defined in the header of this file.
+  const wait = (pred) => new Promise((resolve, reject) => {
     const t0 = Date.now(); // get start time
 
     // add polling timer
@@ -284,12 +290,12 @@
         // predicate succeeded, remove timer and resolve promise
         clearInterval(timer); // remove timer
         resolve(); // resolve promise
-      } else if (Date.now() - t0 > UNTIL_POLL_TIMEOUT) {
+      } else if (Date.now() - t0 > WAIT_POLL_TIMEOUT) {
         // timeout exceeded, remove timer and reject promise
         clearInterval(timer); // remove timer
         reject(); // reject promise
       }
-    }, UNTIL_POLL_INTERVAL);
+    }, WAIT_POLL_INTERVAL);
   });
 
   // event handlers
