@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "dk-sort",
+  "version": "0.1",
+
+  "description": "Make entries in dailykos.com live update articles sortable.",
+  "homepage_url": "https://github.com/pablotron/dk-sort",
+
+  "icons": {
+    "48": "icons/sort-numeric-down-48.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.dailykos.com/*"],
+      "js": ["dk-sort.js"]
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+// bookmarklet which periodically re-sorts the entries in the body of a
+// daily kos live update article so that the entries are sorted in
+// chronological order.
+//
+// the following uncommented line (beginning with "javascript:" and
+// ending with "F()})()") is a minified version which can be
+// installed as a bookmarklet in your browser (tested in chrome and
+// firefox)
+//
+// to install:
+// 1. create a new entry in your bookmarks toolbar named "dk sort".
+// 2. copy the line below which begins with "javascript:"
+//    and ends with "F()})()" into the URL field of the new entry.
+// 3. save the bookmark toolbar entry.  this will create an entry
+//    named "dk sort" in your bookmarks toolbar.
+//
+// to use the bookmarklet when viewing a daily kos live update
+// article, click the "dk sort" entry in your bookmarks toolbar.
+//
+// this will install a timer on the current page which runs every 3
+// seconds, finds all of the live update entries on the page and sorts
+// them in chronological order.
+//
+// notes:
+// * if you reload the page of the live update article, you will need to
+//   click the bookmarklet to reinstall the timer which sorts the
+//   entries.
+// * the timer runs every 3 seconds, so there will occasionally be a
+//   delay of a second or two between when a new entry is added and when
+//   it is sorted into the correct position at the bottom of the body of
+//   the article.
+//
+javascript:(()=>{let W=window,K='dksort',I='innerHTML',D='dataset',T='epochTime',qsa=(s)=>document.querySelectorAll(s),set=(e,h,t)=>{e[I]=h;e[D][T]=t},map=(e)=>({h:e[I],t:e[D][T]}),S='.live-update-wrapper',F=()=>{let E=Array.from(qsa(S),map),L=E.length;E.sort((a,b)=>+a.t-+b.t);qsa(S).forEach((e,i)=>set(e,E[i].h,E[i].t));};if(W[K])clearInterval(W[K]);W[K]=setInterval(F,3000);F();})()
+
+// unminified code with comments.
+// (use jsmin to minify for bookmarklet)
+javascript:(() => {
+  let W = window,
+      K = 'dksort',
+      I = 'innerHTML',
+      D = 'dataset',
+      T = 'epochTime',
+      qsa = (s) => document.querySelectorAll(s),
+      set = (e, h, t) => { e[I] = h; e[D][T] = t },
+      map = (e) => ({ h: e[I], t: e[D][T] }),
+      S = '.live-update-wrapper',
+      F = () => {
+        let E = Array.from(qsa(S), map), // get entries
+            L = E.length; // get entry count
+
+        E.sort((a,b) => +a.t - +b.t); // sort chronologically
+        // console.log(`sorted ${L} entries`);
+
+        qsa(S).forEach((e, i) => set(e, E[i].h, E[i].t)); // redraw
+      };
+
+  if (W[K]) clearInterval(W[K]); // clear interval (if any)
+  W[K] = setInterval(F, 3000); // set timer (every 3s)
+  F(); // sort entries
+})()
+
