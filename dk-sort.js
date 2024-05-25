@@ -46,7 +46,7 @@
       help: 'About this panel.',
     }, {
       id: 'download',
-      name: 'Download Entries',
+      name: 'Download',
       help: 'Download live update entries as a CSV file.',
     }],
 
@@ -85,7 +85,7 @@
           id='dk-sort-${id}'
           title='${help}'
           aria-label='${help}'
-          style='padding-left: 5px; padding-right: 5px; margin-left: 5px'
+          style='padding-left: 10px; padding-right: 10px; margin-left: 5px'
         >
           ${name}
         </button>
