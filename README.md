@@ -49,7 +49,12 @@ Click this button to show a brief explanation of the tool.
 
 ![toolbar download button](./shots/help-3-toolbar-download.png)
 
-Click this button to show a brief explanation of the tool.
+Click this button to download live update entries as a [CSV][] file with
+the following columns:
+
+- **time_utc**: [RFC3339][]-formatted [UTC][] timestamp.
+- **text**: Text content of entry.
+- **html**: [HTML][] content of entry.
 
 ## Notes
 
@@ -89,3 +94,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   "Bookmark that contains JavaScript which adds new browser features."
 [firefox]: https://mozilla.org/firefox/
   "Firefox web browser"
+[rfc3339]: https://en.wikipedia.org/wiki/ISO_8601#RFCs
+  "RFC3339 date/time format"
+[utc]: https://en.wikipedia.org/wiki/Coordinated_Universal_Time
+  "Coordinated Universal Time (UTC)"
+[html]: https://en.wikipedia.org/wiki/HTML
+  "HyperText Markup Language (HTML)"
